@@ -1,13 +1,15 @@
-import { Button } from "./components/ui/button"
+import { Button } from './components/ui/button'
+
+import NavBar from './components/shared/navbar'
 
 function App() {
-
-
   return (
     <>
-    <div className='min-h-svh bg-blue-500 flex items-center justify-center'>
-      <Button>Entrar</Button>
-    </div>
+      <div className='flex flex-col min-h-svh'>
+        <NavBar />
+        <main className='flex-1'>Contéudo Principal</main>
+        <footer>Rodapé</footer>
+      </div>
     </>
   )
 }
