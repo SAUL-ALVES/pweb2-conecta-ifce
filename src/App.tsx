@@ -1,14 +1,13 @@
-import { Button } from './components/ui/button'
-
-import NavBar from './components/shared/navbar'
-import Footer from './components/shared/footer'
+import Footer from '@/components/shared/footer'
+import NavBar from '@/components/shared/navbar'
+import HomePage from '@/pages/HomePage'
 
 function App() {
   return (
     <>
       <div className='flex flex-col min-h-svh'>
         <NavBar />
-        <main className='flex-1'>Contéudo Principal</main>
+        <main className='flex-1'><HomePage/></main>
         <Footer/>
       </div>
     </>
