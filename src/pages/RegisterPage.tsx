@@ -25,7 +25,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { ZodError } from 'zod'
 
 function RegisterPage() {
   const [showPass, setShowPass] = useState<boolean>(false)
@@ -70,7 +69,7 @@ function RegisterPage() {
             className="flex flex-col gap-4 "
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex items-center">
+            <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="firstName" className="text-foreground">
                   Nome
