@@ -17,31 +17,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { registerSchema } from '@/schemas/register.schema'
+import {
+  registerSchema,
+  type RegisterFormData,
+} from '@/schemas/register.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { ZodError } from 'zod'
 
 function RegisterPage() {
   const [showPass, setShowPass] = useState<boolean>(false)
 
-  const handleSubmit = (event: React.SubmitEvent) => {
-    event.preventDefault()
-    const formData = new FormData(event.target)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onBlur',
+  })
 
-    const data = {
-      firstName: formData.get('firstName'),
-      password: formData.get('password'),
-    }
+  const onSubmit = async (data: RegisterFormData) => {
+    console.log('Enviando...', data)
 
-    try {
-      const validateData = registerSchema.parse(data)
-      console.log(validateData)
-    } catch (error) {
-      if (error instanceof ZodError) {
-        console.error(error)
-      }
-    }
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+
+    console.log('Usuário cadastrado.')
+    reset()
   }
   return (
     <section className="flex-1 flex items-center justify-center py-20">
@@ -60,7 +66,10 @@ function RegisterPage() {
         </CardHeader>
 
         <CardContent>
-          <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-4 "
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="flex items-center">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="firstName" className="text-foreground">
@@ -68,11 +77,17 @@ function RegisterPage() {
                 </Label>
                 <Input
                   id="firstName"
-                  name="firstName"
                   type="text"
                   placeholder="Seu nome"
-                  // required
+                  required
+                  className="h-11 bg-background"
+                  {...register('firstName')}
                 />
+                {errors.firstName && (
+                  <p className="text-xs text-destructive">
+                    {errors.firstName.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -81,11 +96,17 @@ function RegisterPage() {
                 </Label>
                 <Input
                   id="lastName"
-                  name="lastName"
                   type="text"
                   placeholder="Seu sobrenome"
-                  // required
+                  required
+                  className="h-11 bg-background"
+                  {...register('lastName')}
                 />
+                {errors.lastName && (
+                  <p className="text-xs text-destructive">
+                    {errors.lastName.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -95,46 +116,83 @@ function RegisterPage() {
               </Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
                 placeholder="seu.nome@ifce.edu.br"
-                // required
+                required
+                className="h-11 bg-background"
+                {...register('email')}
               />
+              {errors.email && (
+                  <p className="text-xs text-destructive">
+                    {errors.email.message}
+                  </p>
+                )}
             </div>
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="role" className="text-foreground">
                 Vínculo
               </Label>
-              <Select>
-                <SelectTrigger className="bg-background w-full h-11" id="role">
-                  <SelectValue placeholder="Selecione seu vínculo com o IFCE" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="student">Estudante</SelectItem>
-                  <SelectItem value="professor">Professor</SelectItem>
-                  <SelectItem value="technican">Técnico(a)</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? ''}
+                  >
+                    <SelectTrigger
+                      className="bg-background w-full h-11"
+                      id="role"
+                    >
+                      <SelectValue placeholder="Selecione seu vínculo com o IFCE" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="student">Estudante</SelectItem>
+                      <SelectItem value="professor">Docente</SelectItem>
+                      <SelectItem value="technican">Técnico(a)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.role && (
+                  <p className="text-xs text-destructive">
+                    {errors.role.message}
+                  </p>
+                )}
             </div>
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="campus" className="text-foreground">
                 Campus
               </Label>
-              <Select>
-                <SelectTrigger
-                  className="bg-background w-full h-11"
-                  id="campus"
-                >
-                  <SelectValue placeholder="Selecione seu campus" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="taua">Tauá</SelectItem>
-                  <SelectItem value="boa_viagem">Boa Viagem</SelectItem>
-                  <SelectItem value="fortaleza">Fortaleza</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="campus"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? ''}
+                  >
+                    <SelectTrigger
+                      className="bg-background w-full h-11"
+                      id="campus"
+                    >
+                      <SelectValue placeholder="Selecione seu campus" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="taua">Tauá</SelectItem>
+                      <SelectItem value="boa_viagem">Boa Viagem</SelectItem>
+                      <SelectItem value="fortaleza">Fortaleza</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.campus && (
+                  <p className="text-xs text-destructive">
+                    {errors.campus.message}
+                  </p>
+                )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -145,11 +203,11 @@ function RegisterPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  name="password"
                   type={showPass ? 'text' : 'password'}
                   placeholder="Digite sua senha"
-                  // required
+                  required
                   className="h-11 bg-background"
+                  {...register('password')}
                 />
                 <button
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
@@ -163,6 +221,11 @@ function RegisterPage() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                  <p className="text-xs text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
 
               <p className="text-xs text-muted-foreground">
                 Mínimo de 8 caracteres com letras e números
