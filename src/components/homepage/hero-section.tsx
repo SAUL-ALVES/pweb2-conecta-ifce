@@ -14,7 +14,7 @@ function HeroSection() {
 
         <h1 className="mt-6 text-6xl text-balance font-bold text-foreground tracking-tight">
           Conecte-se, colabore e{' '}
-          <span className="text-primary">crescça junto</span> com a comunidade
+          <span className="text-primary">cresça junto</span> com a comunidade
           IFCE
         </h1>
 

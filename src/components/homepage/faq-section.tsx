@@ -46,10 +46,14 @@ function FaqSection() {
           </h2>
         </div>
 
-        <Accordion type="single" collapsible className="w-full mt-16">
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full mt-16"
+        >
           {faq.map((item) => (
             <AccordionItem key={item.question} value={item.question}>
-              <AccordionTrigger className="text-base font-medium text-foreground hover:text-primary">
+              <AccordionTrigger className="text-base font-medium text-foreground hover:text-primary hover:cursor-pointer">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
