@@ -14,7 +14,7 @@ export const http = {
     throw new Error('Erro ao buscar dados')
   },
   post: async <ResponseType>(
-    endPoint: string,
+    endPoint: string, 
     body: any,
   ): Promise<ResponseType> => {
     const finalUrl = buildUrl(endPoint)
