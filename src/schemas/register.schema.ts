@@ -14,8 +14,7 @@ export const registerSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, 'O nome de usuário só pode conter letras, números e underscores.'),
 
   email: z
-    .email('E-mail inválido')
-    .endsWith('ifce.edu.br', 'Use seu e-mail institucional'),
+    .email('E-mail inválido'),
 
   role: z.enum(['student', 'professor', 'technician']),
 
