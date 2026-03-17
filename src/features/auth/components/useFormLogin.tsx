@@ -1,5 +1,9 @@
-import { loginSchema, type LoginFormData } from '@/features/auth/schemas/login.schema'
+import {
+  loginSchema,
+  type LoginFormData,
+} from '@/features/auth/schemas/login.schema'
 import { setAccessToken } from '@/features/auth/storage/auth.storage'
+import { ApiError } from '@/infra/http/api-error'
 import { http } from '@/infra/http/http-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
@@ -8,6 +12,8 @@ import { useNavigate } from 'react-router'
 
 export function useFormLogin() {
   const [showPass, setShowPass] = useState<boolean>(false)
+  const [authError, setAuthError] = useState<string | null>(null)
+
   const navigate = useNavigate()
 
   const {
@@ -20,6 +26,8 @@ export function useFormLogin() {
   })
 
   const onSubmit = async (data: LoginFormData) => {
+    setAuthError(null)
+
     try {
       const responseData = await http.post<{ token: string; user: any }>(
         'auth/login',
@@ -29,7 +37,12 @@ export function useFormLogin() {
       setAccessToken(responseData.token)
       navigate('/feed')
     } catch (error) {
-      console.error('Erro ao fazer login:', error)
+      if (error instanceof ApiError) {
+        setAuthError(error.message)
+      } else {
+        setAuthError('Ocorreu um erro inesperado. Tente novamente.')
+      }
+      console.error(error)
     }
   }
 
@@ -37,6 +50,8 @@ export function useFormLogin() {
     state: {
       showPass,
       setShowPass,
+      authError,
+      setAuthError,
     },
     onSubmit,
     useForm: {

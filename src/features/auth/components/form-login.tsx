@@ -1,18 +1,20 @@
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
-import { EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react'
+import { AlertCircleIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react'
 import { useFormLogin } from './useFormLogin'
 
 export function FormLogin() {
   const {
-    state: { showPass, setShowPass },
+    state: { showPass, setShowPass, authError },
     onSubmit,
     useForm: { register, handleSubmit, isSubmitting, isValid, errors },
   } = useFormLogin()
 
   return (
     <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
+
+
       <div className="flex flex-col gap-2">
         <Label htmlFor="email" className="text-foreground">
           E-mail institucional
@@ -66,10 +68,22 @@ export function FormLogin() {
         )}
       </div>
 
-      <Button type="submit" className="mt-2 h-11" disabled={isSubmitting || !isValid}>
+      {authError && (
+        <div className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+          <AlertCircleIcon className="size-4 shrink-0" />
+          <p>{authError}</p>
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        className="mt-2 h-11"
+        disabled={isSubmitting || !isValid}
+      >
         {isSubmitting ? (
           <span className="flex items-center gap-4">
-            <Loader2Icon className="size-4 animate-spin" /> <span>Entrando...</span>
+            <Loader2Icon className="size-4 animate-spin" />{' '}
+            <span>Entrando...</span>
           </span>
         ) : (
           'Entrar'
