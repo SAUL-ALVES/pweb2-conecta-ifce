@@ -42,7 +42,7 @@ export function useFormLogin() {
       } else {
         setAuthError('Ocorreu um erro inesperado. Tente novamente.')
       }
-      console.error(error)
+      
     }
   }
 

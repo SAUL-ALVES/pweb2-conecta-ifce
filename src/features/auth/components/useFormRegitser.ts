@@ -2,8 +2,8 @@ import {
   registerSchema,
   type RegisterFormData,
 } from '@/features/auth/schemas/register.schema'
-import { setAccessToken } from '@/features/auth/storage/auth.storage'
-import { http } from '@/infra/http/http-client'
+import { getCampuses, registerUser } from '@/features/auth/services/register.service'
+import { ApiError } from '@/infra/http/api-error'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router'
 
 export function useFormRegister() {
   const [showPass, setShowPass] = useState<boolean>(false)
+  const [registerError, setRegisterError] = useState<string | null>(null)
   const [campuses, setCampuses] = useState<
     Array<{
       id: string
@@ -23,12 +24,12 @@ export function useFormRegister() {
   useEffect(() => {
     async function fetchCampuses() {
       try {
-        const campuses = await http.get<Array<{ id: string; name: string }>>(
-          'campuses',
-        )
+        const campuses = await getCampuses()
         setCampuses(campuses)
       } catch (error) {
-        console.error(error)
+        if (error instanceof ApiError) {
+          setRegisterError(error.message)
+        }
       }
     }
     fetchCampuses()
@@ -46,18 +47,19 @@ export function useFormRegister() {
   })
 
   const onSubmit = async (data: RegisterFormData) => {
+    setRegisterError(null)
     const { course, ...rest } = data
     const payload = data.role === 'student' ? data : rest
 
     try {
-      const responseData = await http.post<{ token: string; user: any }>(
-        'auth/register',
-        payload,
-      )
-      setAccessToken(responseData.token)
+      await registerUser(payload)
       navigate('/feed')
     } catch (error) {
-      console.error(error)
+      if (error instanceof ApiError) {
+        setRegisterError(error.message)
+      } else {
+        setRegisterError('Erro ao criar conta. Tente novamente.')
+      }
     }
   }
 
@@ -65,6 +67,7 @@ export function useFormRegister() {
     state: {
       showPass,
       setShowPass,
+      registerError,
       campuses,
     },
     onSubmit,
