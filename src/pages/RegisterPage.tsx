@@ -23,11 +23,30 @@ import {
 } from '@/schemas/register.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 function RegisterPage() {
   const [showPass, setShowPass] = useState<boolean>(false)
+  const [campuses, setCampuses] = useState<
+    Array<{
+      id: string
+      name: string
+    }>
+  >([])
+
+  useEffect(() => {
+    async function fetchCampuses() {
+      const response = await fetch(
+        'https://conectaifce-api.proflucasmendes.com.br/campuses',
+      )
+      if (response.ok) {
+        const data = await response.json()
+        setCampuses(data)
+      }
+    }
+    fetchCampuses()
+  }, [])
 
   const {
     register,
@@ -110,6 +129,25 @@ function RegisterPage() {
             </div>
 
             <div className="flex flex-col gap-2">
+                <Label htmlFor="handle" className="text-foreground">
+                  Nome de usuário
+                </Label>
+                <Input
+                  id="handle"
+                  type="text"
+                  placeholder="Seu nome de usuário"
+                  required
+                  className="h-11 bg-background"
+                  {...register('handle')}
+                />
+                {errors.handle && (
+                  <p className="text-xs text-destructive">
+                    {errors.handle.message}
+                  </p>
+                )}
+              </div>
+
+            <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-foreground">
                 E-mail institucional
               </Label>
@@ -122,12 +160,12 @@ function RegisterPage() {
                 {...register('email')}
               />
               {errors.email && (
-                  <p className="text-xs text-destructive">
-                    {errors.email.message}
-                  </p>
-                )}
+                <p className="text-xs text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
-
+            <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="role" className="text-foreground">
                 Vínculo
@@ -141,12 +179,13 @@ function RegisterPage() {
                     value={field.value ?? ''}
                   >
                     <SelectTrigger
-                      className="bg-background w-full h-11"
+                      className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
                       id="role"
                     >
-                      <SelectValue placeholder="Selecione seu vínculo com o IFCE" />
+                      <SelectValue placeholder="Vínculo com o IFCE" />
                     </SelectTrigger>
                     <SelectContent>
+                      {/* RESTAURADO AQUI: */}
                       <SelectItem value="student">Estudante</SelectItem>
                       <SelectItem value="professor">Docente</SelectItem>
                       <SelectItem value="technican">Técnico(a)</SelectItem>
@@ -155,10 +194,10 @@ function RegisterPage() {
                 )}
               />
               {errors.role && (
-                  <p className="text-xs text-destructive">
-                    {errors.role.message}
-                  </p>
-                )}
+                <p className="text-xs text-destructive">
+                  {errors.role.message}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -174,25 +213,49 @@ function RegisterPage() {
                     value={field.value ?? ''}
                   >
                     <SelectTrigger
-                      className="bg-background w-full h-11"
+                      className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
                       id="campus"
                     >
-                      <SelectValue placeholder="Selecione seu campus" />
+                      <SelectValue placeholder="Selecione o campus" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="taua">Tauá</SelectItem>
-                      <SelectItem value="boa_viagem">Boa Viagem</SelectItem>
-                      <SelectItem value="fortaleza">Fortaleza</SelectItem>
+                      {campuses &&
+                        campuses.map((campus) => (
+                          <SelectItem
+                            value={campus.id}
+                            key={campus.id}
+                          >{campus.name}</SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                 )}
               />
               {errors.campus && (
+                <p className="text-xs text-destructive">
+                  {errors.campus.message}
+                </p>
+              )}
+            </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="course" className="text-foreground">
+                  Selecione seu curso
+                </Label>
+                <Input
+                  id="handle"
+                  type="text"
+                  placeholder="Seu curso"
+                  required
+                  className="h-11 bg-background"
+                  {...register('course')}
+                />
+                {errors.course && (
                   <p className="text-xs text-destructive">
-                    {errors.campus.message}
+                    {errors.course.message}
                   </p>
                 )}
-            </div>
+              </div>
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-foreground">
@@ -221,10 +284,10 @@ function RegisterPage() {
                 </button>
               </div>
               {errors.password && (
-                  <p className="text-xs text-destructive">
-                    {errors.password.message}
-                  </p>
-                )}
+                <p className="text-xs text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
 
               <p className="text-xs text-muted-foreground">
                 Mínimo de 8 caracteres com letras e números
