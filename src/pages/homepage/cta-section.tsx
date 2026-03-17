@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 
 function CtaSection() {
@@ -23,7 +23,9 @@ function CtaSection() {
             </a>
           </Button>
           <Button variant="ghost" size="lg" asChild>
-            <a href="/login" className='w-40 h-12'>Já tem conta?</a>
+            <a href="/login" className="w-40 h-12">
+              Já tem conta?
+            </a>
           </Button>
         </div>
       </div>

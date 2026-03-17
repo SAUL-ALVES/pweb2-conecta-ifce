@@ -1,5 +1,5 @@
-import Footer from '@/components/shared/footer'
-import NavBar from '@/components/shared/navbar'
+import Footer from '@/shared/components/footer'
+import NavBar from '@/shared/components/navbar'
 import { Outlet } from 'react-router'
 
 function App() {
