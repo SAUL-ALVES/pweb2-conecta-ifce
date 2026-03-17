@@ -2,9 +2,8 @@ import {
   loginSchema,
   type LoginFormData,
 } from '@/features/auth/schemas/login.schema'
-import { setAccessToken } from '@/features/auth/storage/auth.storage'
+import { loginUser } from '@/features/auth/services/login.service'
 import { ApiError } from '@/infra/http/api-error'
-import { http } from '@/infra/http/http-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,12 +28,8 @@ export function useFormLogin() {
     setAuthError(null)
 
     try {
-      const responseData = await http.post<{ token: string; user: any }>(
-        'auth/login',
-        data,
-      )
 
-      setAccessToken(responseData.token)
+      await loginUser(data)
       navigate('/feed')
     } catch (error) {
       if (error instanceof ApiError) {
@@ -42,7 +37,7 @@ export function useFormLogin() {
       } else {
         setAuthError('Ocorreu um erro inesperado. Tente novamente.')
       }
-      
+      console.error(error)
     }
   }
 
