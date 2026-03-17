@@ -22,9 +22,10 @@ import {
   type RegisterFormData,
 } from '@/schemas/register.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 
 function RegisterPage() {
   const [showPass, setShowPass] = useState<boolean>(false)
@@ -34,6 +35,8 @@ function RegisterPage() {
       name: string
     }>
   >([])
+
+  const navigate = useNavigate
 
   useEffect(() => {
     async function fetchCampuses() {
@@ -54,18 +57,31 @@ function RegisterPage() {
     reset,
     control,
     formState: { errors, isSubmitting, isValid },
+    watch,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: 'onBlur',
   })
 
   const onSubmit = async (data: RegisterFormData) => {
-    console.log('Enviando...', data)
-
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    console.log('Usuário cadastrado.')
-    reset()
+    const { course, ...rest } = data
+    const payload = data.role === 'student' ? data : rest
+    const response = await fetch(
+      'https://conectaifce-api.proflucasmendes.com.br/auth/register',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      },
+    )
+    if (response.ok) {
+      const responseData = await response.json()
+      console.log(responseData)
+      localStorage.setItem('acess_token', responseData.token)
+      navigate("/feed")
+    }
   }
   return (
     <section className="flex-1 flex items-center justify-center py-20">
@@ -129,23 +145,23 @@ function RegisterPage() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <Label htmlFor="handle" className="text-foreground">
-                  Nome de usuário
-                </Label>
-                <Input
-                  id="handle"
-                  type="text"
-                  placeholder="Seu nome de usuário"
-                  required
-                  className="h-11 bg-background"
-                  {...register('handle')}
-                />
-                {errors.handle && (
-                  <p className="text-xs text-destructive">
-                    {errors.handle.message}
-                  </p>
-                )}
-              </div>
+              <Label htmlFor="handle" className="text-foreground">
+                Nome de usuário
+              </Label>
+              <Input
+                id="handle"
+                type="text"
+                placeholder="Seu nome de usuário"
+                required
+                className="h-11 bg-background"
+                {...register('handle')}
+              />
+              {errors.handle && (
+                <p className="text-xs text-destructive">
+                  {errors.handle.message}
+                </p>
+              )}
+            </div>
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-foreground">
@@ -166,79 +182,79 @@ function RegisterPage() {
               )}
             </div>
             <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="role" className="text-foreground">
-                Vínculo
-              </Label>
-              <Controller
-                name="role"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value ?? ''}
-                  >
-                    <SelectTrigger
-                      className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
-                      id="role"
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="role" className="text-foreground">
+                  Vínculo
+                </Label>
+                <Controller
+                  name="role"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? ''}
                     >
-                      <SelectValue placeholder="Vínculo com o IFCE" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {/* RESTAURADO AQUI: */}
-                      <SelectItem value="student">Estudante</SelectItem>
-                      <SelectItem value="professor">Docente</SelectItem>
-                      <SelectItem value="technican">Técnico(a)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <SelectTrigger
+                        className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
+                        id="role"
+                      >
+                        <SelectValue placeholder="Vínculo com o IFCE" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {/* RESTAURADO AQUI: */}
+                        <SelectItem value="student">Estudante</SelectItem>
+                        <SelectItem value="professor">Docente</SelectItem>
+                        <SelectItem value="technican">Técnico(a)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.role && (
+                  <p className="text-xs text-destructive">
+                    {errors.role.message}
+                  </p>
                 )}
-              />
-              {errors.role && (
-                <p className="text-xs text-destructive">
-                  {errors.role.message}
-                </p>
-              )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="campus" className="text-foreground">
+                  Campus
+                </Label>
+                <Controller
+                  name="campus"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? ''}
+                    >
+                      <SelectTrigger
+                        className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
+                        id="campus"
+                      >
+                        <SelectValue placeholder="Selecione o campus" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {campuses &&
+                          campuses.map((campus) => (
+                            <SelectItem value={campus.id} key={campus.id}>
+                              {campus.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.campus && (
+                  <p className="text-xs text-destructive">
+                    {errors.campus.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="campus" className="text-foreground">
-                Campus
-              </Label>
-              <Controller
-                name="campus"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value ?? ''}
-                  >
-                    <SelectTrigger
-                      className="bg-background w-full h-11 text-xs px-2 sm:text-sm sm:px-3"
-                      id="campus"
-                    >
-                      <SelectValue placeholder="Selecione o campus" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {campuses &&
-                        campuses.map((campus) => (
-                          <SelectItem
-                            value={campus.id}
-                            key={campus.id}
-                          >{campus.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.campus && (
-                <p className="text-xs text-destructive">
-                  {errors.campus.message}
-                </p>
-              )}
-            </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
+            {watch('role') === 'student' && (
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="course" className="text-foreground">
                   Selecione seu curso
                 </Label>
@@ -256,6 +272,7 @@ function RegisterPage() {
                   </p>
                 )}
               </div>
+            )}
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-foreground">
@@ -294,8 +311,18 @@ function RegisterPage() {
               </p>
             </div>
 
-            <Button type="submit" className="mt-2 h-11">
-              Criar conta
+            <Button
+              type="submit"
+              className="mt-2 h-11"
+              disabled={isSubmitting || !isValid}
+            >
+              {isSubmitting ? (
+                <span className='flex items-center gap-4'>
+                  <Loader2Icon className="size-4 animate-spin" /> <span>Criando conta...</span>
+                </span>
+              ) : (
+                'Criar conta'
+              )}
             </Button>
           </form>
         </CardContent>
