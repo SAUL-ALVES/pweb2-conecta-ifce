@@ -153,7 +153,7 @@ function FormRegister() {
         </div>
       </div>
 
-      {useForm.watch('role') === 'student' && (
+      {useForm.watch('role') === 'STUDENT' && (
         <div className="flex flex-col gap-2">
           <Label htmlFor="course" className="text-foreground">
             Selecione seu curso
