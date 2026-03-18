@@ -1,18 +1,20 @@
-import { setAccessToken } from '@/features/auth/storage/auth.storage'
-import type { AuthResponseDTO, CampusDTO, RegisterRequestDTO } from '@/features/auth/types/dto/auth.dto'
+import { setAccessToken } from '@/features/auth/storages/token.storage'
+import type {
+  AuthResponseDTO,
+  CampusDTO,
+  RegisterRequestDTO,
+} from '@/features/auth/types/dto/auth.dto'
 import { http } from '@/infra/http/http-client'
-
 
 export async function getCampuses(): Promise<Array<CampusDTO>> {
   const campuses = await http.get<Array<CampusDTO>>('campuses')
   return campuses
 }
 
-export async function registerUser(user: RegisterRequestDTO): Promise<AuthResponseDTO> {
-  const responseData = await http.post<AuthResponseDTO>(
-    'auth/register',
-    user,
-  )
+export async function registerUser(
+  user: RegisterRequestDTO,
+): Promise<AuthResponseDTO> {
+  const responseData = await http.post<AuthResponseDTO>('auth/register', user)
   setAccessToken(responseData.token)
   return responseData
 }
