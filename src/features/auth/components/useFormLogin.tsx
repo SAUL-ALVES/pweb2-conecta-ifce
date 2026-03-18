@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth/contexts/AuthContext'
 import {
   loginSchema,
   type LoginFormData,
@@ -12,8 +13,8 @@ import { useNavigate } from 'react-router'
 export function useFormLogin() {
   const [showPass, setShowPass] = useState<boolean>(false)
   const [authError, setAuthError] = useState<string | null>(null)
-
   const navigate = useNavigate()
+  const {setAuthUser} = useAuth()
 
   const {
     register,
@@ -29,7 +30,8 @@ export function useFormLogin() {
 
     try {
 
-      await loginUser(data)
+      const responseData = await loginUser(data)
+      setAuthUser(responseData.user)
       navigate('/feed')
     } catch (error) {
       if (error instanceof ApiError) {

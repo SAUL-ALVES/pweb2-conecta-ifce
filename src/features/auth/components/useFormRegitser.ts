@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth/contexts/AuthContext'
 import {
   registerSchema,
   type RegisterFormData,
@@ -20,6 +21,7 @@ export function useFormRegister() {
   >([])
 
   const navigate = useNavigate()
+  const { setAuthUser } = useAuth()
 
   useEffect(() => {
     async function fetchCampuses() {
@@ -52,7 +54,8 @@ export function useFormRegister() {
     const payload = data.role === 'STUDENT' ? data : rest
 
     try {
-      await registerUser(payload)
+      const responseData = await registerUser(payload)
+      setAuthUser(responseData.user)
       navigate('/feed')
     } catch (error) {
       if (error instanceof ApiError) {
