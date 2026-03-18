@@ -109,9 +109,9 @@ function FormRegister() {
                 </SelectTrigger>
                 <SelectContent>
                   {/* RESTAURADO AQUI: */}
-                  <SelectItem value="student">Estudante</SelectItem>
-                  <SelectItem value="professor">Docente</SelectItem>
-                  <SelectItem value="technican">Técnico(a)</SelectItem>
+                  <SelectItem value="STUDENT">Estudante</SelectItem>
+                  <SelectItem value="PROFESSOR">Docente</SelectItem>
+                  <SelectItem value="TECHNICAN">Técnico(a)</SelectItem>
                 </SelectContent>
               </Select>
             )}
