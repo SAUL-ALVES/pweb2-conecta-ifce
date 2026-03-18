@@ -1,3 +1,5 @@
+type Role = 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
+
 export type CampusDTO = {
   id: string
   name: string
@@ -8,7 +10,7 @@ export type RegisterRequestDTO = {
   lastName: string
   handle: string
   email: string
-  role: 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
+  role: Role
   campus: string
   password: string
   course?: string
@@ -27,7 +29,7 @@ export type AuthUser = {
   avatarUrl?: string
   handle: string
   email: string
-  role: 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
+  role: Role
   campus: CampusDTO
   course?: string
 }
