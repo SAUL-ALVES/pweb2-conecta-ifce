@@ -49,7 +49,7 @@ export function useFormRegister() {
   const onSubmit = async (data: RegisterFormData) => {
     setRegisterError(null)
     const { course, ...rest } = data
-    const payload = data.role === 'student' ? data : rest
+    const payload = data.role === 'STUDENT' ? data : rest
 
     try {
       await registerUser(payload)
