@@ -16,7 +16,7 @@ export const registerSchema = z.object({
   email: z
     .email('E-mail inválido'),
 
-  role: z.enum(['student', 'professor', 'technician']),
+  role: z.enum(['STUDENT', 'PROFESSOR', 'TECHNICIAN']),
 
   campus: z.string().nonempty(),
   course: z
