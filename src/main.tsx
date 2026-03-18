@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import LoginPage from '@/pages/LoginPage.tsx'
 import HomePage from '@/pages/homepage/HomePage.tsx'
 import RegisterPage from '@/pages/RegisterPage.tsx'
+import { AuthProvider } from '@/features/auth/contexts/AuthContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -22,14 +23,16 @@ const router = createBrowserRouter([
       },
       {
         path: 'register',
-        Component: RegisterPage
-      }
+        Component: RegisterPage,
+      },
     ],
   },
 ])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )
