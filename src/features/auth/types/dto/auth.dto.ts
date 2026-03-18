@@ -1,5 +1,3 @@
-// src/types/dto/auth.dto.ts
-
 export type CampusDTO = {
   id: string
   name: string
@@ -10,7 +8,7 @@ export type RegisterRequestDTO = {
   lastName: string
   handle: string
   email: string
-  role: 'student' | 'professor' | 'technician'
+  role: 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
   campus: string
   password: string
   course?: string
@@ -21,13 +19,20 @@ export type LoginRequestDTO = {
   password: string
 }
 
+export type AuthUser = {
+  id: string
+  firstName: string
+  lastName: string
+  name: string
+  avatarUrl?: string
+  handle: string
+  email: string
+  role: 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
+  campus: CampusDTO
+  course?: string
+}
 
 export type AuthResponseDTO = {
   token: string
-  user: {
-    id: string
-    name: string
-    avatarUrl?: string
-    campus: CampusDTO
-  }
+  user: AuthUser
 }
