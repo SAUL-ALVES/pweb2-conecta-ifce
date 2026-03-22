@@ -1,46 +1,46 @@
+import { Link } from 'react-router'
 import Brand from './brand'
-import { Button } from '@/shared/components/ui/button'
 
-function NavBar() {
+function NavBar({ children }: { children: React.ReactNode }) {
   return (
     <header className="sticky top-0 border-b border-border z-50 bg-card/80 backdrop-blur-md">
       <nav className="container-main flex items-center justify-between py-3">
-        <a href="/">
-          <Brand />
-        </a>
-        <div className="flex gap-4 lg:gap-8">
-          <a
-            href="/"
-            className="text-muted-foreground font-medium hover:text-primary"
-          >
-            Inicío
-          </a>
-          <a
-            href="/#feature-section"
-            className="text-muted-foreground font-medium hover:text-primary"
-          >
-            Recursos
-          </a>
-          <a
-            href="/#faq-section"
-            className="text-muted-foreground font-medium hover:text-primary"
-          >
-            Perguntas Frequentes
-          </a>
-        </div>
-
-        <div className="flex-gap-2">
-          <Button variant="ghost" size="lg" asChild>
-            <a href="/login">Entrar</a>
-          </Button>
-
-          <Button size="lg" asChild>
-            <a href="/register">Criar Conta</a>
-          </Button>
-        </div>
+        {children}
       </nav>
     </header>
   )
 }
+
+function NavBrand({ to }: { to: string }) {
+  return (
+    <Link to={to}>
+      <Brand />
+    </Link>
+  )
+}
+
+function NavLinks({ children }: { children: React.ReactNode }) {
+  return <div className="flex gap-4 lg:gap-8">{children}</div>
+}
+
+function NavLink({ to, text }: { to: string; text: string }) {
+  return (
+    <Link
+      to={to}
+      className="text-muted-foreground font-medium hover:text-primary"
+    >
+      {text}
+    </Link>
+  )
+}
+
+function NavActions({ children }: { children: React.ReactNode }) {
+  return <div className="flex gap-2">{children}</div>
+}
+
+NavBar.Brand = NavBrand
+NavBar.Links = NavLinks
+NavBar.Link = NavLink
+NavBar.Actions = NavActions
 
 export default NavBar

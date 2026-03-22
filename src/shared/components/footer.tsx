@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import Brand from './brand'
 
 function Footer() {
@@ -6,9 +7,9 @@ function Footer() {
       <div className="container-main py-12">
         <div className="grid grid-cols-4">
           <div>
-            <a href="/">
+            <Link to="/">
               <Brand />
-            </a>
+            </Link>
             <p className="mt-3 mb-4 text-sm text-muted-foreground text-balance leading-relaxed">
               Rede social acadêmica do IFCE. Conectando a comunidade para
               crescer juntos
@@ -21,28 +22,28 @@ function Footer() {
             </h3>
             <ul className="flex flex-col gap-2">
               <li>
-                <a
-                  href="/feed"
+                <Link
+                  to="/feed"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Feed acadêmico
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/groups"
+                <Link
+                  to="/groups"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Grupos de Estudo
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/profile"
+                <Link
+                  to="/profile"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Perfil
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -55,26 +56,28 @@ function Footer() {
               <li>
                 <a
                   href="https://portal.ifce.edu.br"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   IFCE
                 </a>
               </li>
               <li>
-                <a
-                  href="/about"
+                <Link
+                  to="/about"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Sobre
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Contato
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -85,20 +88,20 @@ function Footer() {
             </h3>
             <ul className="flex flex-col gap-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Termos de uso
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="text-muted-foreground text-sm font-medium hover:text-primary"
                 >
                   Privacidade
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
