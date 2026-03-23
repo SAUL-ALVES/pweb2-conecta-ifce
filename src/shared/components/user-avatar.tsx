@@ -4,11 +4,21 @@ import {
   AvatarImage,
 } from '@/shared/components/ui/avatar'
 
-function UserAvatar() {
+function UserAvatar({
+  imageUrl,
+  initials,
+  size,
+}: {
+  imageUrl: string | undefined
+  initials: string
+  size: 'sm' | 'default' | 'lg' | undefined
+}) {
   return (
-    <Avatar>
-      <AvatarImage src="https://github.com/shadcn.png" />
-      <AvatarFallback>CN</AvatarFallback>
+    <Avatar size={size}>
+      <AvatarImage src={imageUrl} />
+      <AvatarFallback className="bg-primary/20 text-primary border border-primary/50 font-semibold">
+        {initials}
+      </AvatarFallback>
     </Avatar>
   )
 }

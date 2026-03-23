@@ -1,4 +1,4 @@
-import { setAccessToken } from '@/features/auth/storages/token.storage'
+import { clearAccessToken, setAccessToken } from '@/features/auth/storages/token.storage'
 import type {
   AuthResponseDTO,
   LoginRequestDTO,
@@ -15,4 +15,8 @@ export async function loginUser(
 
   setAccessToken(responseData.token)
   return responseData
+}
+
+export function logoutUser(): void {
+  clearAccessToken()
 }
