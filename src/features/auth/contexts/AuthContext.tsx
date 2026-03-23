@@ -3,7 +3,7 @@ import {
   getStoredUser,
   setStoredUser,
 } from '@/features/auth/storages/authUser.storage'
-import type { AuthUser } from '@/features/auth/types/dto/auth.dto'
+import type { AuthUser } from '@/features/auth/types/dto/AuthDTO'
 import { createContext, useContext, useState, type ReactNode } from 'react'
 
 type AuthContextType = {
@@ -47,7 +47,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('O contexto de autenticação não pode ser acessado fora do AuthProvider')
+    throw new Error(
+      'O contexto de autenticação não pode ser acessado fora do AuthProvider',
+    )
   }
   return context
 }

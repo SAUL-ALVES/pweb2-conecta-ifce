@@ -1,7 +1,6 @@
-import type { CampusDTO } from "@/features/auth/types/dto/auth.dto"
+import type { CampusDTO } from '@/features/auth/types/dto/AuthDTO'
 
 export type Role = 'STUDENT' | 'PROFESSOR' | 'TECHNICIAN'
-
 
 export type UserDomain = {
   id: string
@@ -18,7 +17,7 @@ export type UserDomain = {
   stats: {
     followersCount: number
     followingCount: number
-    posts: number
+    postsCount: number
   }
   isFollowing: boolean
 }

@@ -3,7 +3,7 @@ import type {
   AuthResponseDTO,
   CampusDTO,
   RegisterRequestDTO,
-} from '@/features/auth/types/dto/auth.dto'
+} from '@/features/auth/types/dto/AuthDTO'
 import { http } from '@/infra/http/http-client'
 
 export async function getCampuses(): Promise<Array<CampusDTO>> {
