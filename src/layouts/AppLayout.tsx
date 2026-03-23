@@ -15,6 +15,7 @@ function AppLayout() {
       <div className="flex flex-col min-h-svh">
         <NavBar>
           <NavBar.Brand to="/feed" />
+          <NavBar.Search/>
 
           <NavBar.Links>
             <NavBar.Link to="/feed" text="Feed" />
