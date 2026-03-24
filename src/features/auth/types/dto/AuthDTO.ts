@@ -1,4 +1,4 @@
-import type { Role } from "@/features/users/types/UserDomain"
+import type { Role } from '@/features/users/types/UserDomain'
 
 export type CampusDTO = {
   id: string
