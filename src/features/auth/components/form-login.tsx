@@ -1,7 +1,14 @@
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
-import { AlertCircleIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react'
+import {
+  AlertCircleIcon,
+  CheckCircle2Icon,
+  EyeIcon,
+  EyeOffIcon,
+  Loader2Icon
+} from 'lucide-react'
+import { Link, useLocation } from 'react-router'
 import { useFormLogin } from './useFormLogin'
 
 export function FormLogin() {
@@ -11,9 +18,20 @@ export function FormLogin() {
     useForm: { register, handleSubmit, isSubmitting, isValid, errors },
   } = useFormLogin()
 
-  return (
-    <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
+  
+  const location = useLocation()
+  const successMessage = location.state?.message
 
+  return (
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+
+
+      {successMessage && (
+        <div className="flex items-center gap-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-600 dark:text-emerald-400">
+          <CheckCircle2Icon className="size-4 shrink-0" />
+          <p>{successMessage}</p>
+        </div>
+      )}
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="email" className="text-foreground">
@@ -37,9 +55,9 @@ export function FormLogin() {
           <Label htmlFor="password" className="text-foreground">
             Senha
           </Label>
-          <a href="/recover" className="text-primary text-sm hover:underline">
+          <Link to="/recover" className="text-primary text-sm hover:underline">
             Esqueceu a senha?
-          </a>
+          </Link>
         </div>
 
         <div className="relative">
@@ -67,6 +85,7 @@ export function FormLogin() {
           <p className="text-xs text-destructive">{errors.password.message}</p>
         )}
       </div>
+
 
       {authError && (
         <div className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">

@@ -35,3 +35,12 @@ export type AuthResponseDTO = {
   token: string
   user: AuthUser
 }
+
+export type RecoverRequestDTO = {
+  email: string
+}
+
+export type ResetPasswordRequestDTO = {
+  token: string
+  newPassword: string
+}
