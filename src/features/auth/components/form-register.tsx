@@ -91,7 +91,7 @@ function FormRegister() {
           <p className="text-xs text-destructive">{useForm.errors.email.message}</p>
         )}
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <Label htmlFor="role" className="text-foreground">
             Vínculo

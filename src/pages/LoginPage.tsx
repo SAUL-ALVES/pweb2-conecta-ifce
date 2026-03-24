@@ -12,7 +12,7 @@ import { FormLogin } from '@/features/auth/components/form-login'
 function LoginPage() {
   return (
     <section className="flex-1 flex items-center justify-center py-20">
-      <Card className="max-w-md border-border w-md">
+      <Card className="w-full max-w-sm lg:max-w-md border-border mx-4 lg:mx-0">
         <CardHeader className="text-center ">
           <div className="w-ful flex justify-center mb-4">
             <Brand />
